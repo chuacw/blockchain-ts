@@ -49,4 +49,9 @@ app.listen(HTTP_PORT, () => {
     console.log(`listening on port ${HTTP_PORT}`);
 });
 
+// api to view balance of peer's balance
+app.get('/balance', (req, res) => {
+    res.json({ balance: wallet.balance });
+});
+
 p2pserver.listen(); // starts the p2pserver
