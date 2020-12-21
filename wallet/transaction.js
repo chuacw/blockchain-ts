@@ -33,7 +33,7 @@ class Transaction {
         return Transaction.transactionWithOutputs(senderWallet,
             [
                 {
-                    amount: senderWallet.balance - amount, 
+                    amount: senderWallet.balance - amount,
                     address: senderWallet.publicKey
                 },
                 { amount: amount, address: recipient }
@@ -80,6 +80,15 @@ class Transaction {
         transaction.outputs.push(...outputs);
         Transaction.signTransaction(transaction, senderWallet);
         return transaction;
+    }
+
+    // 132
+    static rewardTransaction(minerWallet, blockchainWallet) {
+        return Transaction.transactionWithOutputs(
+            blockchainWallet, [{
+                amount: MINING_REWARD,
+                address: minerWallet.publicKey
+            }]);
     }
 
 }
