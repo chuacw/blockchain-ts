@@ -62,7 +62,7 @@ class P2pserver {
     // 55
     messageHandler(socket) {
         // on receiving a message execute a callback function
-        
+
         // 116
         socket.on('message', message => {
             const data = JSON.parse(message);
@@ -115,6 +115,15 @@ class P2pserver {
                 transaction: transaction
             })
         );
+    }
+
+    // 136
+    broadcastClearTransactions() {
+        this.sockets.forEach(socket => {
+            socket.send(JSON.stringify({
+                type: MESSAGE_TYPE.clear_transactions
+            }))
+        })
     }
 
 }
