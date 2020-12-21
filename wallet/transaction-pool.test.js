@@ -47,7 +47,7 @@ describe('Transaction Pool', () => {
             for (let i = 0; i < 6; i++) {
                 wallet = new Wallet();
                 transaction = wallet.createTransaction('r4nd-4ddr355', 30,
-                blockchain, // 146
+                    blockchain, // 146
                     transactionPool);
                 if (i & 1) {
                     transaction.input.amount = 999999;

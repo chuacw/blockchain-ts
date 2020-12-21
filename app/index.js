@@ -72,6 +72,7 @@ app.post('/transact', (req, res) => {
     const transaction = wallet.createTransaction(
         recipient,
         amount,
+        blockchain, // 146
         transactionPool);
     p2pserver.broadcastTransaction(transaction); // 117 
     res.redirect('/transactions');
