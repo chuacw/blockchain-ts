@@ -24,5 +24,11 @@ describe('Transaction Pool', () => {
             === transaction.id)))
             .not.toEqual(oldTransaction);
     });
-    
+
+    // 139
+    it('clears transactions', () => {
+        transactionPool.clear();
+        expect(transactionPool.transactions).toEqual([]);
+    });
+
 });
