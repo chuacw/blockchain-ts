@@ -21,6 +21,7 @@ class Miner {
         this.p2pServer.syncChain();
         this.transactionPool.clear();
         this.p2pServer.broadcastClearTransactions();
+        
         return block;
     }
 

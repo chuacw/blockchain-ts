@@ -28,7 +28,7 @@ describe("Blockchain", () => {
         // conventional method for check true and false is toBe
         expect(blockchain.isValidChain(blockchain2.chain)).toBe(true);
     });
-    it('invalidates a chain with a corrupt the genesis block', () => {
+    it('invalidates a chain with a corrupted genesis block', () => {
         blockchain2.chain[0].data = 'bad data';
         expect(blockchain.isValidChain(blockchain2.chain)).toBe(false);
     });
