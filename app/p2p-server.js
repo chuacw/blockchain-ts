@@ -54,6 +54,17 @@ class P2pserver {
         });
     }
 
+    // 56
+    sendChain(socket) {
+        socket.send(JSON.stringify(this.blockchain.chain));
+    } 
+    
+    syncChain() {
+        this.sockets.forEach(socket => {
+            this.sendChain(socket);
+        });
+    }
+
 }
 
 module.exports = P2pserver;
