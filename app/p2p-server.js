@@ -38,10 +38,19 @@ class P2pserver {
         peers.forEach(peer => {
             // create a socket for each peer
             const socket = new WebSocket(peer);
-            // open event listener is emitted when a connection is
-            established
+            // open event listener is emitted when a connection is established
             // saving the socket in the array
             socket.on('open', () => this.connectSocket(socket));
+        });
+    }
+
+    // 55
+    messageHandler(socket) {
+        //on receiving a message execute a callback function
+        socket.on('message', message => {
+            const data = JSON.parse(message);
+            console.log("data ", data);
+            this.blockchain.replaceChain(data);
         });
     }
 
