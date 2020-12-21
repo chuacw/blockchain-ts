@@ -7,11 +7,13 @@ const SHA256 = require('crypto-js/sha256');
 // 6
 class Block {
 
-    constructor(timestamp, lastHash, hash, data) {
+    constructor(timestamp, lastHash, hash, data, nonce, difficulty) {
         this.timestamp = timestamp;
         this.lastHash = lastHash;
         this.hash = hash;
         this.data = data;
+        this.nonce = nonce;
+        this.difficulty = difficulty || DIFFICULTY;
     }
 
     // 7
