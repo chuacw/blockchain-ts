@@ -1,3 +1,6 @@
+// 140
+const { MINING_REWARD } = require('../config');
+
 const TransactionPool = require('./transaction-pool');
 const Transaction = require('./transaction');
 const Wallet = require('./index');
@@ -54,6 +57,18 @@ describe('Transaction Pool', () => {
         it('grabs valid transactions', () => {
             expect(transactionPool.validTransactions()).toEqual(validTransactions)
                 ;
+        });
+    });
+
+    // 140
+    describe('creating a reward transaction', () => {
+        beforeEach(() => {
+            transaction = Transaction.rewardTransaction(wallet,
+                Wallet.blockchainWallet());
+        });
+        it('reward the miners wallet', () => {
+            expect(transaction.outputs.find(output => output.address ===
+                wallet.publicKey).amount).toEqual(MINING_REWARD);
         });
     });
 
