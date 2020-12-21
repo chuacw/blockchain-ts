@@ -37,42 +37,42 @@ class Block {
 
     // 11
     static hash(timestamp, lastHash, data, nonce, difficulty) {
-        return SHA256(`${timestamp}${lastHash}${data}${nonce}${difficulty}`).toString(); // 70
-    }
+        return ChainUtil.hash(`${timestamp}${lastHash}${data}${nonce}${difficulty}`).toString(); // 80 
+    } 
 
     // 12
     static mineBlock(lastBlock, data) {
-        let hash;
-        let timestamp;
-        const lastHash = lastBlock.hash;
-        let { difficulty } = lastBlock;
-        let nonce = 0;
-        //generate the hash of the block
-        do {
-            nonce++;
-            timestamp = Date.now();
-            difficulty = Block.adjustDifficulty(lastBlock, timestamp);
-            hash = Block.hash(timestamp, lastHash, data, nonce, difficulty)
-            // check if we have the required no of leading number of zeros
-        } while (hash.substring(0, difficulty) !== '0'.repeat(difficulty));
-        return new this(timestamp, lastHash, hash, data, nonce,
-            difficulty);
-    }
+    let hash;
+    let timestamp;
+    const lastHash = lastBlock.hash;
+    let { difficulty } = lastBlock;
+    let nonce = 0;
+    //generate the hash of the block
+    do {
+        nonce++;
+        timestamp = Date.now();
+        difficulty = Block.adjustDifficulty(lastBlock, timestamp);
+        hash = Block.hash(timestamp, lastHash, data, nonce, difficulty)
+        // check if we have the required no of leading number of zeros
+    } while (hash.substring(0, difficulty) !== '0'.repeat(difficulty));
+    return new this(timestamp, lastHash, hash, data, nonce,
+        difficulty);
+}
 
     // 24
     static blockHash(block) {
-        //destructuring
-        const { timestamp, lastHash, data, nonce, difficulty } = block; // 70
-        return Block.hash(timestamp, lastHash, data, nonce, difficulty); // 70
-    }
+    //destructuring
+    const { timestamp, lastHash, data, nonce, difficulty } = block; // 70
+    return Block.hash(timestamp, lastHash, data, nonce, difficulty); // 70
+}
 
     // 68
     static adjustDifficulty(lastBlock, currentTime) {
-        let { difficulty } = lastBlock;
-        difficulty = lastBlock.timestamp + MINE_RATE > currentTime ?
-            difficulty + 1 : difficulty - 1;
-        return difficulty;
-    }
+    let { difficulty } = lastBlock;
+    difficulty = lastBlock.timestamp + MINE_RATE > currentTime ?
+        difficulty + 1 : difficulty - 1;
+    return difficulty;
+}
 
 }
 module.exports = Block;
