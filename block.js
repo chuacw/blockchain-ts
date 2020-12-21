@@ -37,6 +37,13 @@ class Block {
         return new this(timestamp, lastHash, this.hash(timestamp,
             lastHash, data), data);
     }
-    
+
+    // 24
+    static blockHash(block) {
+        //destructuring
+        const { timestamp, lastHash, data } = block;
+        return Block.hash(timestamp, lastHash, data);
+    }
+
 }
 module.exports = Block;
