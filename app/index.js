@@ -1,3 +1,7 @@
+// 98
+const Wallet = require('../wallet');
+const TransactionPool = require('../wallet/transaction-pool');
+
 // 50
 const P2pserver = require('./p2p-server.js');
 const express = require('express');
@@ -13,6 +17,12 @@ const app = express();
 
 //using the body parser middleware
 app.use(bodyParser.json());
+
+// create a new wallet
+const wallet = new Wallet();
+// create a new transaction pool which will be later
+// decentralized and synchronized using the peer to peer server
+const transactionPool = new TransactionPool();
 
 // create a new blockchain instance
 const blockchain = new Blockchain();
