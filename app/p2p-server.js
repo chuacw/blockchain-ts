@@ -82,6 +82,12 @@ class P2pserver {
                     */
                     this.transactionPool.updateOrAddTransaction(data.transaction);
                     break;
+                case MESSAGE_TYPE.clear_transactions:
+                    /**
+                    * clear the transaction pool
+                    */
+                    this.transactionPool.clear();
+                    break;
             }
         });
     }
