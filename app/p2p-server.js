@@ -31,6 +31,12 @@ class P2pserver {
         // push the socket to the socket array
         this.sockets.push(socket);
         console.log("Socket connected");
+
+        // 57
+        // register a message event listener to the socket
+        this.messageHandler(socket);
+        // on new connection send the blockchain chain to the peer
+        this.sendChain(socket);
     }
 
     connectToPeers() {
@@ -57,8 +63,8 @@ class P2pserver {
     // 56
     sendChain(socket) {
         socket.send(JSON.stringify(this.blockchain.chain));
-    } 
-    
+    }
+
     syncChain() {
         this.sockets.forEach(socket => {
             this.sendChain(socket);
