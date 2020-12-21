@@ -1,3 +1,6 @@
+// 79
+const ChainUtil = require('../chain-util');
+
 // 67
 const { DIFFICULTY, MINE_RATE } = require('../config.js');
 
