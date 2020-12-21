@@ -1,3 +1,9 @@
+// 113
+const MESSAGE_TYPE = {
+    chain: 'CHAIN',
+    transaction: 'TRANSACTION'
+}
+
 // 49
 
 const WebSocket = require('ws');
@@ -8,7 +14,7 @@ const P2P_PORT = process.env.P2P_PORT || 5001;
 //list of address to connect to
 const peers = process.env.PEERS ? process.env.PEERS.split(',') : [];
 class P2pserver {
-    
+
     constructor(blockchain, transactionPool) {
         this.blockchain = blockchain;
         this.sockets = [];
@@ -71,6 +77,21 @@ class P2pserver {
         this.sockets.forEach(socket => {
             this.sendChain(socket);
         });
+    }
+
+    broadcastTransaction(transaction) {
+        this.sockets.forEach(socket => {
+            this.sendTransaction(socket, transaction);
+        });
+    }
+
+    sendTransaction(socket, transaction) {
+        socket.send(JSON.stringify(
+            {
+            type: MESSAGE_TYPE.transaction,
+            transaction: transaction
+            })
+        );
     }
 
 }
