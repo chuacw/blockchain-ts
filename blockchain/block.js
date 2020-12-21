@@ -33,7 +33,7 @@ class Block {
     }
 
     // 11
-    static hash(timestamp, lastHash, data) {
+    static hash(timestamp, lastHash, data, nonce, difficulty) {
         return SHA256(`${timestamp}${lastHash}${data}${nonce}${difficulty}`).toString(); // 70
     }
 
@@ -51,8 +51,7 @@ class Block {
             difficulty = Block.adjustDifficulty(lastBlock, timestamp);
             hash = Block.hash(timestamp, lastHash, data, nonce, difficulty)
             // check if we have the required no of leading number of zeros
-        } while (hash.substring(0, difficulty) !==
-            '0'.repeat(difficulty));
+        } while (hash.substring(0, difficulty) !== '0'.repeat(difficulty));
         return new this(timestamp, lastHash, hash, data, nonce,
             difficulty);
     }
@@ -60,7 +59,7 @@ class Block {
     // 24
     static blockHash(block) {
         //destructuring
-        const { timestamp, lastHash, data, , nonce, difficulty } = block; // 70
+        const { timestamp, lastHash, data, nonce, difficulty } = block; // 70
         return Block.hash(timestamp, lastHash, data, nonce, difficulty); // 70
     }
 
