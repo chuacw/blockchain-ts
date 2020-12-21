@@ -60,11 +60,28 @@ class P2pserver {
 
     // 55
     messageHandler(socket) {
-        //on receiving a message execute a callback function
+        // on receiving a message execute a callback function
+        
+        // 116
         socket.on('message', message => {
             const data = JSON.parse(message);
             console.log("data ", data);
-            this.blockchain.replaceChain(data);
+            switch (data.type) {
+                case MESSAGE_TYPE.chain:
+                    /**
+                    * call replace blockchain if the
+                    * received chain is longer it will replace it
+                    */
+                    this.blockchain.replaceChain(data.chain);
+                    break;
+                case MESSAGE_TYPE.transaction:
+                    /**
+                    * add transaction to the transaction
+                    * pool or replace with existing one
+                    */
+                    this.transactionPool.updateOrAddTransaction(data.transaction);
+                    break;
+            }
         });
     }
 
@@ -93,8 +110,8 @@ class P2pserver {
     sendTransaction(socket, transaction) {
         socket.send(JSON.stringify(
             {
-            type: MESSAGE_TYPE.transaction,
-            transaction: transaction
+                type: MESSAGE_TYPE.transaction,
+                transaction: transaction
             })
         );
     }
