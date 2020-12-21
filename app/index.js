@@ -75,19 +75,24 @@ app.post('/transact', (req, res) => {
         transactionPool);
     p2pserver.broadcastTransaction(transaction); // 117 
     res.redirect('/transactions');
-})
+});
 
 // 124
 // get public key
 app.get('/public-key', (req, res) => {
     res.json({ publicKey: wallet.publicKey });
-})
+});
 
 // 138
 app.get('/mine-transactions', (req, res) => {
     const block = miner.mine();
     console.log(`New block added: ${block.toString()}`);
     res.redirect('/blocks');
-})
+});
+
+// 144
+app.get('/balance', (req, res) => {
+    res.json({ balance: wallet.calculateBalance(blockchain) });
+});
 
 p2pserver.listen(); // starts the p2pserver
