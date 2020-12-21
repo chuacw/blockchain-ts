@@ -1,7 +1,8 @@
 // 113
 const MESSAGE_TYPE = {
     chain: 'CHAIN',
-    transaction: 'TRANSACTION'
+    transaction: 'TRANSACTION',
+    clear_transactions: 'CLEAR_TRANSACTIONS' // 135
 }
 
 // 49

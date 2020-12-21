@@ -57,5 +57,10 @@ class TransactionPool {
         })
     }
 
+    // 134
+    clear() {
+        this.transactions = [];
+    }
+
 }
 module.exports = TransactionPool;
