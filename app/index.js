@@ -54,4 +54,9 @@ app.get('/balance', (req, res) => {
     res.json({ balance: wallet.balance });
 });
 
+// api to view transaction in the transaction pool
+app.get('/transactions', (req, res) => {
+    res.json(transactionPool.transactions);
+});
+
 p2pserver.listen(); // starts the p2pserver
