@@ -1,4 +1,8 @@
+// 131
+const { MINING_REWARD } = require('../config.js');
+
 const ChainUtil = require('../chain-util');
+
 class Transaction {
 
     constructor() {
