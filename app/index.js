@@ -2,16 +2,22 @@
 const P2pserver = require('./p2p-server.js');
 const express = require('express');
 const Blockchain = require('../blockchain');
-const p2pserver = new P2pserver(blockchain);
+
 const bodyParser = require('body-parser');
+
 //get the port from the user or set the default port
 const HTTP_PORT = process.env.HTTP_PORT || 3001;
+
 //create a new app
 const app = express();
+
 //using the body parser middleware
 app.use(bodyParser.json());
+
 // create a new blockchain instance
 const blockchain = new Blockchain();
+const p2pserver = new P2pserver(blockchain);
+
 //EXPOSED APIs
 //api to get the blocks
 app.get('/blocks', (req, res) => {
