@@ -70,7 +70,12 @@ class P2pserver {
 
     // 56
     sendChain(socket) {
-        socket.send(JSON.stringify(this.blockchain.chain));
+        socket.send(
+            JSON.stringify({
+                type: MESSAGE_TYPE.chain,
+                chain: this.blockchain.chain
+            })
+        ); // 115
     }
 
     syncChain() {
