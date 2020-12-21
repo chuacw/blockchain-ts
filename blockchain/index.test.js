@@ -1,6 +1,6 @@
 // 21
 
-const Blockchain = require('./blockchain');
+const Blockchain = require('./index.test'); // 37
 const Block = require('./block');
 describe("Blockchain", () => {
     let blockchain;
