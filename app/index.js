@@ -26,7 +26,7 @@ const transactionPool = new TransactionPool();
 
 // create a new blockchain instance
 const blockchain = new Blockchain();
-const p2pserver = new P2pserver(blockchain);
+const p2pserver = new P2pserver(blockchain, transactionPool); // 112
 
 //EXPOSED APIs
 //api to get the blocks
