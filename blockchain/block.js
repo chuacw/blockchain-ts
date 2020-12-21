@@ -1,3 +1,6 @@
+// 67
+const { DIFFICULTY, MINE_RATE } = require('../config.js');
+
 // 10
 const SHA256 = require('crypto-js/sha256');
 
