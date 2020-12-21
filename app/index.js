@@ -59,4 +59,15 @@ app.get('/transactions', (req, res) => {
     res.json(transactionPool.transactions);
 });
 
+// 105
+// create transactions
+app.post('/transact', (req, res) => {
+    const { recipient, amount } = req.body;
+    const transaction = wallet.createTransaction(
+        recipient,
+        amount,
+        transactionPool);
+    res.redirect('/transactions');
+})
+
 p2pserver.listen(); // starts the p2pserver
