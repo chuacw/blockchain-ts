@@ -59,5 +59,18 @@ class Block {
         return true;
     }
 
+    // 26
+    replaceChain(newChain) {
+        if (newChain.length <= this.chain.length) {
+            console.log("Received chain is no longer than the current chain");
+            return;
+        } else if (!this.isValidChain(newChain)) {
+            console.log("Received chain is invalid");
+            return;
+        }
+        console.log("Replacing the current chain with new chain");
+        this.chain = newChain;
+    }
+
 }
 module.exports = Block;
