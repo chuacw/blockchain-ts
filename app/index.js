@@ -1,3 +1,6 @@
+// 138
+const Miner = require('./miner');
+
 // 98
 const Wallet = require('../wallet');
 const TransactionPool = require('../wallet/transaction-pool');
@@ -27,6 +30,9 @@ const transactionPool = new TransactionPool();
 // create a new blockchain instance
 const blockchain = new Blockchain();
 const p2pserver = new P2pserver(blockchain, transactionPool); // 112
+
+// 138
+const miner = new Miner(blockchain, transactionPool, wallet, p2pserver);
 
 //EXPOSED APIs
 //api to get the blocks
@@ -75,6 +81,13 @@ app.post('/transact', (req, res) => {
 // get public key
 app.get('/public-key', (req, res) => {
     res.json({ publicKey: wallet.publicKey });
+})
+
+// 138
+app.get('/mine-transactions', (req, res) => {
+    const block = miner.mine();
+    console.log(`New block added: ${block.toString()}`);
+    res.redirect('/blocks');
 })
 
 p2pserver.listen(); // starts the p2pserver
