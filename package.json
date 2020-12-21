@@ -6,6 +6,9 @@
     "test": "jest --watchAll",
     "dev": "nodemon ./app"
   },
+  "jest": {
+    "testEnvironment": "node"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
