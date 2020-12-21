@@ -1,3 +1,6 @@
+// 146
+const Blockchain = require('../blockchain');
+
 // 140
 const { MINING_REWARD } = require('../config');
 
@@ -10,7 +13,9 @@ describe('Transaction Pool', () => {
     beforeEach(() => {
         transactionPool = new TransactionPool();
         wallet = new Wallet();
+        blockchain = new Blockchain(); // 146
         transaction = wallet.createTransaction('r4nd-addr355', 30,
+            blockchain, // 146
             transactionPool);
     });
 
@@ -42,6 +47,7 @@ describe('Transaction Pool', () => {
             for (let i = 0; i < 6; i++) {
                 wallet = new Wallet();
                 transaction = wallet.createTransaction('r4nd-4ddr355', 30,
+                blockchain, // 146
                     transactionPool);
                 if (i & 1) {
                     transaction.input.amount = 999999;
