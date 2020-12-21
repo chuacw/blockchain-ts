@@ -13,16 +13,28 @@ class Transaction {
             console.log(`Amount : ${amount} exceeds the balance`);
             return;
         }
-        const transaction = new this();
-        transaction.outputs.push(...[
-            {
-                amount: senderWallet.balance - amount, address:
-                    senderWallet.publicKey
-            },
-            { amount: amount, address: recipient }
-        ]);
-        Transaction.signTransaction(transaction, senderWallet);
-        return transaction;
+        // const transaction = new this();
+        // transaction.outputs.push(...[
+        //     {
+        //         amount: senderWallet.balance - amount, address:
+        //             senderWallet.publicKey
+        //     },
+        //     { amount: amount, address: recipient }
+        // ]);
+        // Transaction.signTransaction(transaction, senderWallet);
+        // return transaction;
+
+        // 130
+
+        return Transaction.transactionWithOutputs(senderWallet,
+            [
+                {
+                    amount: senderWallet.balance - amount, 
+                    address: senderWallet.publicKey
+                },
+                { amount: amount, address: recipient }
+            ]
+        );
     }
 
     // 83
