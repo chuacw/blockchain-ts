@@ -23,12 +23,17 @@ const p2pserver = new P2pserver(blockchain);
 app.get('/blocks', (req, res) => {
     res.json(blockchain.chain);
 });
+
 //api to add blocks
 app.post('/mine', (req, res) => {
     const block = blockchain.addBlock(req.body.data);
     console.log(`New block added: ${block.toString()}`);
+
+    // 58
+    p2pserver.syncChain();
     res.redirect('/blocks');
 });
+
 // app server configurations
 app.listen(HTTP_PORT, () => {
     console.log(`listening on port ${HTTP_PORT}`);
