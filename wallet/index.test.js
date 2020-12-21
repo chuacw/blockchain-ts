@@ -57,16 +57,16 @@ describe('Wallet', () => {
             for (let i = 0; i < repeatAdd; i++) {
                 senderWallet.createTransaction(wallet.publicKey, addBalance,
                     blockchain, transactionPool);
-            } b
-            lockchain.addBlock(transactionPool.transactions);
+            } 
+            blockchain.addBlock(transactionPool.transactions);
         });
         it('calculates the balance for the blockchain transactions matching the recipient', () => {
             expect(wallet.calculateBalance(blockchain)).toEqual(INITIAL_BALANCE +
                 (addBalance * repeatAdd));
-        })
+        });
         it('calculates the balance for the blockchain transactions matching the sender', () => {
             expect(senderWallet.calculateBalance(blockchain)).toEqual(INITIAL_BALANCE - (addBalance * repeatAdd));
-        })
+        });
         describe('and the recipient conducts a transaction', () => {
             let subtractBalance, recipientBalance;
             beforeEach(() => {
@@ -76,7 +76,7 @@ describe('Wallet', () => {
                 wallet.createTransaction(senderWallet.publicKey,
                     subtractBalance, blockchain, transactionPool);
                 blockchain.addBlock(transactionPool.transactions);
-            })
+            });
             describe('and the sender sends another transaction to the recipient', () => {
                 beforeEach(() => {
                     transactionPool.clear();
@@ -87,8 +87,8 @@ describe('Wallet', () => {
                 it('calculate the recipient balance only using transactions since its most recent one', () => {
                     expect(wallet.calculateBalance(blockchain)).toEqual(recipientBalance -
                         subtractBalance + addBalance);
-                })
-            })
-        })
+                });
+            });
+        });
     });
 });
