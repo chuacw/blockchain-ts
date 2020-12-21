@@ -22,17 +22,19 @@ class Block {
         Timestamp : ${this.timestamp}
         Last Hash : ${this.lastHash.substring(0, 10)}
         Hash : ${this.hash.substring(0, 10)}
-        Data : ${this.data}`;
+        Data : ${this.data}
+        Nonce : ${this.nonce}
+        Difficulty: ${this.difficulty}`; // 70
     }
 
     // 8
     static genesis() {
-        return new this('Genesis time', '----', 'genesis-hash', []);
+        return new this('Genesis time', '----', 'genesis-hash', [], 0, DIFFICULTY); // 70
     }
 
     // 11
     static hash(timestamp, lastHash, data) {
-        return SHA256(`${timestamp}${lastHash}${data}`).toString();
+        return SHA256(`${timestamp}${lastHash}${data}${nonce}${difficulty}`).toString(); // 70
     }
 
     // 12
@@ -58,8 +60,8 @@ class Block {
     // 24
     static blockHash(block) {
         //destructuring
-        const { timestamp, lastHash, data } = block;
-        return Block.hash(timestamp, lastHash, data);
+        const { timestamp, lastHash, data, , nonce, difficulty } = block; // 70
+        return Block.hash(timestamp, lastHash, data, nonce, difficulty); // 70
     }
 
     // 68
