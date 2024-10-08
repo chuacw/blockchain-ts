@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test-watch": "jest --watchAll",
+    "build": "tsc -b",
     "test": "jest",
     "dev": "tsc -b && nodemon ./bin/app"
   },
@@ -14,11 +15,10 @@
   "author": "chuacw",
   "license": "ISC",
   "dependencies": {
-    "blockchain-ts": "file:",
     "body-parser": "^1.19.0",
     "crypto-js": "^4.0.0",
     "elliptic": "^6.5.3",
-    "express": "^4.17.1",
+    "express": "^4.21.0",
     "uuid": "^9.0.0",
     "ws": "^7.4.1"
   },
