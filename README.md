@@ -1,2 +1,2 @@
-# blockchainjs
- Blockchain JS
+# Blockchain-TS
+ Blockchain in TypeScript
