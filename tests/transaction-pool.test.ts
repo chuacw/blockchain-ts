@@ -1,15 +1,21 @@
 // 146
-const Blockchain = require('../blockchain');
+import { Blockchain } from '../blockchain';
 
 // 140
-const { MINING_REWARD } = require('../config');
+import { MINING_REWARD } from '../misc/config-constants';
 
-const TransactionPool = require('./transaction-pool');
-const Transaction = require('./transaction');
-const Wallet = require('./index');
+import { TransactionPool } from '../wallet/transaction-pool';
+import { Transaction } from '../wallet/transaction';
+import { Wallet } from '../wallet/index';
+
 describe('Transaction Pool', () => {
 
-    let transactionPool, wallet, transaction;
+    let transactionPool!: TransactionPool;
+    let wallet!: Wallet;
+    let transaction!: Transaction;
+    let blockchain!: Blockchain;
+    let newTransaction!: Transaction;
+
     beforeEach(() => {
         transactionPool = new TransactionPool();
         wallet = new Wallet();
@@ -20,15 +26,15 @@ describe('Transaction Pool', () => {
     });
 
     it('adds a transaction to the pool', () => {
-        expect(transactionPool.transactions.find(t => t.id ===
+        expect(transactionPool.transactions.find((t: { id: any; }) => t.id ===
             transaction.id)).toEqual(transaction);
     });
 
     it('updates a transaction in the pool', () => {
         const oldTransaction = JSON.stringify(transaction);
-        newTransaction = transaction.update(wallet, 'foo-4ddr355', 40);
+        newTransaction = transaction.update(wallet!, 'foo-4ddr355', 40)!;
         transactionPool.updateOrAddTransaction(newTransaction);
-        expect(JSON.stringify(transactionPool.transactions.find(t => t.id
+        expect(JSON.stringify(transactionPool.transactions.find((t: { id: any; }) => t.id
             === transaction.id)))
             .not.toEqual(oldTransaction);
     });
@@ -40,7 +46,7 @@ describe('Transaction Pool', () => {
     });
 
     describe('mixing valid and corrupt transactions', () => {
-        let validTransactions;
+        let validTransactions: any[];
         beforeEach(() => {
             validTransactions = [...transactionPool.transactions];
             // creating new transactions with corrupt transactions
@@ -61,8 +67,8 @@ describe('Transaction Pool', () => {
                 stringify(validTransactions));
         });
         it('grabs valid transactions', () => {
-            expect(transactionPool.validTransactions()).toEqual(validTransactions)
-                ;
+            let actualTransactions = transactionPool.validTransactions();
+            expect(actualTransactions).toEqual(validTransactions);
         });
     });
 
@@ -73,8 +79,9 @@ describe('Transaction Pool', () => {
                 Wallet.blockchainWallet());
         });
         it('reward the miners wallet', () => {
-            expect(transaction.outputs.find(output => output.address ===
-                wallet.publicKey).amount).toEqual(MINING_REWARD);
+            const output = transaction.outputs.find((output: { address: any; }) => output.address ===
+                wallet.publicKey);
+            expect(output!.amount).toEqual(MINING_REWARD);
         });
     });
 

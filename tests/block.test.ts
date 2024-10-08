@@ -1,11 +1,12 @@
-const Block = require('./block');
+import { Block } from '../blockchain/block';
+
 /**
 * describe is jest specific function
 * name of the object as string for which the test is written
 * function that will define a series of tests
 */
 describe("Block", () => {
-    let data, lastBlock, block;
+    let data: string, lastBlock: Block, block: Block;
     /**
     * beforeEach allows us to run some code before
     * running any test
@@ -21,14 +22,14 @@ describe("Block", () => {
     * first param is a description
     * second param is callback arrow function
     */
-    it("sets the `data` to match the input", () => {
+    it("sets the data to match the input", () => {
         /**
         * expect is similar to assert
         * it expects something
         */
         expect(block.data).toEqual(data);
     });
-    it("sets the `lastHash` to match the hash of the last block", () => {
+    it("sets the lastHash to match the hash of the last block", () => {
         expect(block.lastHash).toEqual(lastBlock.hash);
     });
 
@@ -40,12 +41,12 @@ describe("Block", () => {
     });
     it('lower the difficulty for a slower generated block', () => {
         // 300000 will make it insanely slow
-        expect(Block.adjustDifficulty(block, block.timestamp +
+        expect(Block.adjustDifficulty(block, (block.timestamp as unknown as number) +
             300000)).toEqual(block.difficulty - 1);
     });
     it('raise the difficulty for a faster generated block', () => {
-        expect(Block.adjustDifficulty(block, block.timestamp +
+        expect(Block.adjustDifficulty(block, (block.timestamp as unknown as number) +
             1)).toEqual(block.difficulty + 1);
     });
-    
+
 })

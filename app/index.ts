@@ -1,19 +1,21 @@
 // 138
-const Miner = require('./miner');
+import { Miner } from './miner';
 
 // 98
-const Wallet = require('../wallet');
-const TransactionPool = require('../wallet/transaction-pool');
+import { Wallet } from '../wallet';
+import { TransactionPool } from '../wallet/transaction-pool';
 
 // 50
-const P2pserver = require('./p2p-server.js');
-const express = require('express');
-const Blockchain = require('../blockchain');
+import { P2pserver } from './p2p-server';
+// import * as express from 'express';
+import express = require("express");
+
+import { Blockchain } from '../blockchain';
 
 const bodyParser = require('body-parser');
 
 // get the port from the user or set the default port
-const HTTP_PORT = process.env.HTTP_PORT || 3001;
+const HTTP_PORT: string | number = process.env.HTTP_PORT || 3001;
 
 // create a new app
 const app = express();

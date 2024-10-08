@@ -1,11 +1,12 @@
 // 95
 
-const Wallet = require('./index');
-const TransactionPool = require('./transaction-pool');
-const Blockchain = require('../blockchain');
-const { INITIAL_BALANCE } = require('../config');
+import { Wallet } from '../wallet/index';
+import { TransactionPool } from '../wallet/transaction-pool';
+import { Blockchain } from '../blockchain';
+import { INITIAL_BALANCE } from '../misc/config-constants';
+
 describe('Wallet', () => {
-    let wallet, transactionPool, blockchain;
+    let wallet: Wallet, transactionPool: TransactionPool, blockchain: Blockchain;
     wallet = new Wallet();
     transactionPool = new TransactionPool();
     beforeEach(() => {
@@ -14,7 +15,7 @@ describe('Wallet', () => {
         blockchain = new Blockchain();
     });
     describe('creating a transaction', () => {
-        let transaction, sendAmount, recipient;
+        let transaction: { outputs: any[]; }, sendAmount: number, recipient: string;
         beforeEach(() => {
             sendAmount = 50;
             recipient = 'r4nd-4ddr355';
@@ -30,7 +31,7 @@ describe('Wallet', () => {
             });
             // this will check if the output address back to the sender is reduced twice the sendAmount
             it('doubles the `sendAmount` subtracted from the wallet balance', () => {
-                expect(transaction.outputs.find(output => output.address ===
+                expect(transaction.outputs.find((output: { address: any; }) => output.address ===
                     wallet.publicKey).amount)
                     .toEqual(wallet.balance - sendAmount * 2);
             });
@@ -40,8 +41,8 @@ describe('Wallet', () => {
                 // hence an array of only the required outputs
                 // map will do some processing over each individual item and replace it with something
                 // else here the amount of the output
-                expect(transaction.outputs.filter(output => output.address ===
-                    recipient).map(output => output.amount)).toEqual([sendAmount,
+                expect(transaction.outputs.filter((output: { address: any; }) => output.address ===
+                    recipient).map((output: { amount: any; }) => output.amount)).toEqual([sendAmount,
                         sendAmount]);
             });
         });
@@ -49,7 +50,7 @@ describe('Wallet', () => {
 
     // 147
     describe('calculating the balance', () => {
-        let addBalance, repeatAdd, senderWallet;
+        let addBalance: number, repeatAdd: number, senderWallet: Wallet;
         beforeEach(() => {
             senderWallet = new Wallet();
             addBalance = 100;
@@ -57,7 +58,7 @@ describe('Wallet', () => {
             for (let i = 0; i < repeatAdd; i++) {
                 senderWallet.createTransaction(wallet.publicKey, addBalance,
                     blockchain, transactionPool);
-            } 
+            }
             blockchain.addBlock(transactionPool.transactions);
         });
         it('calculates the balance for the blockchain transactions matching the recipient', () => {
@@ -68,7 +69,7 @@ describe('Wallet', () => {
             expect(senderWallet.calculateBalance(blockchain)).toEqual(INITIAL_BALANCE - (addBalance * repeatAdd));
         });
         describe('and the recipient conducts a transaction', () => {
-            let subtractBalance, recipientBalance;
+            let subtractBalance: number, recipientBalance: number;
             beforeEach(() => {
                 transactionPool.clear();
                 subtractBalance = 60;

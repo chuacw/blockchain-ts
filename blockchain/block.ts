@@ -1,16 +1,22 @@
 // 79
-const ChainUtil = require('../chain-util');
+import { ChainUtil } from '../misc/chain-util';
 
 // 67
-const { DIFFICULTY, MINE_RATE } = require('../config.js');
+import { DIFFICULTY, MINE_RATE } from '../misc/config-constants';
 
 // 10
-const SHA256 = require('crypto-js/sha256');
+// const SHA256 = require('crypto-js/sha256');
 
 // 6
 class Block {
+    timestamp: string;
+    lastHash: string;
+    hash: string;
+    data: any;
+    nonce: any;
+    difficulty: any;
 
-    constructor(timestamp, lastHash, hash, data, nonce, difficulty) {
+    constructor(timestamp: any, lastHash: any, hash: any, data: any, nonce: any, difficulty: number) {
         this.timestamp = timestamp;
         this.lastHash = lastHash;
         this.hash = hash;
@@ -36,14 +42,14 @@ class Block {
     }
 
     // 11
-    static hash(timestamp, lastHash, data, nonce, difficulty) {
+    static hash(timestamp: number, lastHash: any, data: any, nonce: number, difficulty: any) {
         return ChainUtil.hash(`${timestamp}${lastHash}${data}${nonce}${difficulty}`).toString(); // 80 
     }
 
     // 12
-    static mineBlock(lastBlock, data) {
+    static mineBlock(lastBlock: Block, data: string | any[]) {
         let hash;
-        let timestamp;
+        let timestamp: number;
         const lastHash = lastBlock.hash;
         let { difficulty } = lastBlock;
         let nonce = 0;
@@ -60,19 +66,20 @@ class Block {
     }
 
     // 24
-    static blockHash(block) {
+    static blockHash(block: { timestamp: any; lastHash: any; data: any; nonce: any; difficulty: any; }) {
         // destructuring
         const { timestamp, lastHash, data, nonce, difficulty } = block; // 70
         return Block.hash(timestamp, lastHash, data, nonce, difficulty); // 70
     }
 
     // 68
-    static adjustDifficulty(lastBlock, currentTime) {
+    static adjustDifficulty(lastBlock: Block, currentTime: number) {
         let { difficulty } = lastBlock;
-        difficulty = lastBlock.timestamp + MINE_RATE > currentTime ?
+        difficulty = (lastBlock.timestamp as unknown as number) + MINE_RATE > currentTime ?
             difficulty + 1 : difficulty - 1;
         return difficulty;
     }
 
 }
-module.exports = Block;
+
+export { Block };

@@ -1,20 +1,21 @@
 // 19
-const Block = require('./block');
+import {Block} from './block';
+
 class Blockchain {
+    chain: any[];
     constructor() {
         this.chain = [Block.genesis()];
     }
 
     // 20
-    addBlock(data) {
-        const block = Block.mineBlock(this.chain[this.chain.length - 1],
-            data);
+    addBlock(data: string | any[]) {
+        const block = Block.mineBlock(this.chain[this.chain.length - 1], data);
         this.chain.push(block);
         return block;
     }
 
     // 25
-    isValidChain(chain) {
+    isValidChain(chain: string | any[]) {
         if (JSON.stringify(chain[0]) !== JSON.stringify(Block.genesis()))
             return false;
         for (let i = 1; i < chain.length; i++) {
@@ -28,7 +29,7 @@ class Blockchain {
     }
 
     // 26
-    replaceChain(newChain) {
+    replaceChain(newChain: string | any[]) {
         if (newChain.length <= this.chain.length) {
             console.log("Received chain is not longer than the current chain");
             return;
@@ -37,9 +38,9 @@ class Blockchain {
             return;
         }
         console.log("Replacing the current chain with new chain");
-        this.chain = newChain;
+        (this.chain as any) = newChain;
     }
 
 }
 
-module.exports = Blockchain;
+export { Blockchain };

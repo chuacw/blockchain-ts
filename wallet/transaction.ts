@@ -1,9 +1,27 @@
 // 131
-const { MINING_REWARD } = require('../config.js');
+import { Wallet } from '.';
+import { MINING_REWARD } from '../misc/config-constants';
+import { ChainUtil } from '../misc/chain-util';
 
-const ChainUtil = require('../chain-util');
+class TransactionInput {
+    timestamp!: number;
+    amount!: number;
+    address!: string;
+    signature: any;
+}
+
+class ErrorAmountExceedsBalance extends Error {
+}
+
+class TransactionOutput {
+    amount!: number;
+    address: any;
+}
 
 class Transaction {
+    id: any;
+    input: any;
+    outputs: TransactionOutput[];
 
     constructor() {
         this.id = ChainUtil.id();
@@ -12,10 +30,10 @@ class Transaction {
     }
 
     // 82
-    static newTransaction(senderWallet, recipient, amount) {
+    static newTransaction(senderWallet: Wallet, recipient: any, amount: number) {
         if (amount > senderWallet.balance) {
             console.log(`Amount : ${amount} exceeds the balance`);
-            return;
+            throw new ErrorAmountExceedsBalance(`Amount > balance: ${amount} > ${senderWallet.balance}`);
         }
         // const transaction = new this();
         // transaction.outputs.push(...[
@@ -42,7 +60,7 @@ class Transaction {
     }
 
     // 83
-    static signTransaction(transaction, senderWallet) {
+    static signTransaction(transaction: Transaction, senderWallet: Wallet) {
         transaction.input = {
             timestamp: Date.now(),
             amount: senderWallet.balance,
@@ -53,29 +71,33 @@ class Transaction {
     }
 
     // 84
-    static verifyTransaction(transaction) {
-        return ChainUtil.verifySignature(
-            transaction.input.address,
-            transaction.input.signature,
-            ChainUtil.hash(transaction.outputs)
-        )
+    static verifyTransaction(transaction: { input: { address: any; signature: any; }; outputs: any; }) {
+        const result =
+            ChainUtil.verifySignature(
+                transaction.input.address,
+                transaction.input.signature,
+                ChainUtil.hash(transaction.outputs)
+            );
+        return result;
     }
 
     // 85
-    update(senderWallet, recipient, amount) {
+    update(
+        senderWallet: Wallet,
+        recipient: any, amount: number) {
         const senderOutput = this.outputs.find(output => output.address === senderWallet.publicKey);
         if (amount > senderWallet.amount) {
             console.log(`Amount ${amount} exceeds balance`);
-            return;
+            new ErrorAmountExceedsBalance(`Amount > balance: ${amount} > ${senderWallet.balance}`);
         }
-        senderOutput.amount = senderOutput.amount - amount;
+        senderOutput!.amount = senderOutput!.amount - amount;
         this.outputs.push({ amount: amount, address: recipient });
         Transaction.signTransaction(this, senderWallet);
         return this;
     }
 
     // 129
-    static transactionWithOutputs(senderWallet, outputs) {
+    static transactionWithOutputs(senderWallet: any, outputs: { amount: any; address: any; }[]): Transaction {
         const transaction = new this();
         transaction.outputs.push(...outputs);
         Transaction.signTransaction(transaction, senderWallet);
@@ -83,7 +105,7 @@ class Transaction {
     }
 
     // 132
-    static rewardTransaction(minerWallet, blockchainWallet) {
+    static rewardTransaction(minerWallet: { publicKey: any; }, blockchainWallet: any): Transaction {
         return Transaction.transactionWithOutputs(
             blockchainWallet, [{
                 amount: MINING_REWARD,
@@ -93,4 +115,4 @@ class Transaction {
 
 }
 
-module.exports = Transaction;
+export { Transaction, TransactionOutput };

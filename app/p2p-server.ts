@@ -7,7 +7,8 @@ const MESSAGE_TYPE = {
 
 // 49
 
-const WebSocket = require('ws');
+const WebSocket1 = require('ws');
+import {Blockchain} from '../blockchain';
 
 // declare the peer to peer server port
 
@@ -15,8 +16,11 @@ const P2P_PORT = process.env.P2P_PORT || 5001;
 //list of address to connect to
 const peers = process.env.PEERS ? process.env.PEERS.split(',') : [];
 class P2pserver {
+    blockchain: Blockchain;
+    sockets: any[];
+    transactionPool: any;
 
-    constructor(blockchain, transactionPool) {
+    constructor(blockchain: Blockchain, transactionPool: any) {
         this.blockchain = blockchain;
         this.sockets = [];
         this.transactionPool = transactionPool;
@@ -25,18 +29,18 @@ class P2pserver {
     // create a new p2p server and connections
     listen() {
         // create the p2p server with port as argument
-        const server = new WebSocket.Server({ port: P2P_PORT });
+        const server = new WebSocket1.Server({ port: P2P_PORT });
         // event listener and a callback function for any new connection
         // on any new connection the current instance will send the current chain
         // to the newly connected peer
-        server.on('connection', socket => this.connectSocket(socket));
+        server.on('connection', (socket: any) => this.connectSocket(socket));
         // to connect to the peers that we have specified
         this.connectToPeers();
         console.log(`Listening for peer to peer connection on port : ${P2P_PORT}`);
     }
 
     // after making connection to a socket
-    connectSocket(socket) {
+    connectSocket(socket: any) {
         // push the socket to the socket array
         this.sockets.push(socket);
         console.log("Socket connected");
@@ -49,10 +53,10 @@ class P2pserver {
     }
 
     connectToPeers() {
-        //connect to each peer
+        // connects to each peer
         peers.forEach(peer => {
             // create a socket for each peer
-            const socket = new WebSocket(peer);
+            const socket = new WebSocket1(peer);
             // open event listener is emitted when a connection is established
             // saving the socket in the array
             socket.on('open', () => this.connectSocket(socket));
@@ -60,7 +64,7 @@ class P2pserver {
     }
 
     // 55
-    messageHandler(socket) {
+    messageHandler(socket: { on: (arg0: string, arg1: (message: any) => void) => void; }) {
         // on receiving a message execute a callback function
 
         // 116
@@ -93,7 +97,7 @@ class P2pserver {
     }
 
     // 56
-    sendChain(socket) {
+    sendChain(socket: { send: (arg0: string) => void; }) {
         socket.send(
             JSON.stringify({
                 type: MESSAGE_TYPE.chain,
@@ -108,13 +112,13 @@ class P2pserver {
         });
     }
 
-    broadcastTransaction(transaction) {
+    broadcastTransaction(transaction: any) {
         this.sockets.forEach(socket => {
             this.sendTransaction(socket, transaction);
         });
     }
 
-    sendTransaction(socket, transaction) {
+    sendTransaction(socket: { send: (arg0: string) => void; }, transaction: any) {
         socket.send(JSON.stringify(
             {
                 type: MESSAGE_TYPE.transaction,
@@ -134,4 +138,4 @@ class P2pserver {
 
 }
 
-module.exports = P2pserver;
+export { P2pserver };

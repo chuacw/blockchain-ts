@@ -1,10 +1,11 @@
 // 21
 
-const Blockchain = require('./index'); // 37
-const Block = require('./block');
+import { Blockchain } from '../blockchain/index'; // 37
+import { Block } from '../blockchain/block';
+
 describe("Blockchain", () => {
-    let blockchain;
-    let blockchain2; // 29
+    let blockchain: Blockchain;
+    let blockchain2: Blockchain; // 29
 
     beforeEach(() => {
         blockchain = new Blockchain();
